@@ -34,14 +34,29 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
 ].filter(Boolean) // undefinedを除外
 
+// デバッグ用: 許可されているオリジンをログに出力
+console.log('許可されているCORSオリジン:', allowedOrigins)
+
 app.use(cors({
   origin: (origin, callback) => {
-    // 開発環境ではオリジンなしのリクエストも許可
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(new Error('CORS policyで許可されていません'))
+    // オリジンなしのリクエスト（Postman、curl等）は許可
+    if (!origin) {
+      console.log('オリジンなしのリクエストを許可')
+      return callback(null, true)
     }
+
+    // 許可リストに含まれているか確認
+    if (allowedOrigins.includes(origin)) {
+      console.log(`許可されたオリジン: ${origin}`)
+      return callback(null, true)
+    }
+
+    // 拒否されたオリジンをログに出力
+    console.error(`CORSエラー: オリジン "${origin}" は許可されていません`)
+    console.error('許可されているオリジン:', allowedOrigins)
+    console.error('FRONTEND_URL環境変数:', process.env.FRONTEND_URL || '未設定')
+
+    callback(new Error(`CORS policyで許可されていません。オリジン: ${origin}`))
   },
   credentials: true
 }))

@@ -1,30 +1,30 @@
-# Gitリポジトリのセットアップ手順
+# Git リポジトリのセットアップ手順
 
 ## 現在の状態
 
-✅ Gitリポジトリは初期化済み
+✅ Git リポジトリは初期化済み
 ✅ すべてのファイルがコミット済み
 
-## GitHubにアップロードする手順
+## GitHub にアップロードする手順
 
-### 1. GitHubでリポジトリを作成
+### 1. GitHub でリポジトリを作成
 
 1. https://github.com にアクセスしてログイン
 2. 右上の「+」ボタン → 「New repository」をクリック
 3. リポジトリ名を入力（例: `wedding-photo-gallery`）
 4. 「Public」または「Private」を選択
-5. **「Initialize this repository with a README」はチェックしない**（既にREADMEがあるため）
+5. **「Initialize this repository with a README」はチェックしない**（既に README があるため）
 6. 「Create repository」をクリック
 
 ### 2. リモートリポジトリを追加
 
-GitHubでリポジトリを作成すると、URLが表示されます。以下のコマンドを実行してください：
+GitHub でリポジトリを作成すると、URL が表示されます。以下のコマンドを実行してください：
 
 ```bash
 git remote add origin https://github.com/your-username/wedding-photo-gallery.git
 ```
 
-または、SSHを使用する場合：
+または、SSH を使用する場合：
 
 ```bash
 git remote add origin git@github.com:your-username/wedding-photo-gallery.git
@@ -46,7 +46,7 @@ git branch -M main
 git push -u origin main
 ```
 
-初回プッシュ時は、GitHubの認証情報を入力する必要があります。
+初回プッシュ時は、GitHub の認証情報を入力する必要があります。
 
 ## 認証方法
 
@@ -58,9 +58,9 @@ git push -u origin main
 4. トークンを生成してコピー
 5. プッシュ時にパスワードの代わりにトークンを入力
 
-### SSH認証
+### SSH 認証
 
-SSH鍵を設定している場合は、SSH URLを使用できます。
+SSH 鍵を設定している場合は、SSH URL を使用できます。
 
 ## 今後の更新方法
 
@@ -85,4 +85,3 @@ git push
 - `.env`ファイルや`server/.env`ファイルは`.gitignore`に含まれているため、コミットされません
 - `node_modules`も`.gitignore`に含まれているため、コミットされません
 - 本番環境の認証情報は絶対にコミットしないでください
-
