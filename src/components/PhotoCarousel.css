@@ -1,0 +1,180 @@
+.photo-carousel-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+  flex: 1; /* 利用可能なスペースを最大限使用 */
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* flexboxの子要素が縮小できるように */
+}
+
+.photo-swiper {
+  width: 100%;
+  height: 100%;
+  flex: 1; /* 利用可能なスペースを最大限使用 */
+  min-height: 0; /* flexboxの子要素が縮小できるように */
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.slide-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  padding: 5px;
+}
+
+.slide-content.panel-layout {
+  padding: 5px;
+  overflow: hidden; /* スクロールを無効化 */
+}
+
+/* マソンリーレイアウト用のグリッド（1ページ8枚表示） */
+.photo-masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4列で8枚を配置（2行） */
+  grid-auto-rows: minmax(150px, 1fr); /* 最小高さを設定し、利用可能なスペースを均等に分配 */
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* スクロールを無効化 */
+}
+
+.photo-panel {
+  overflow: hidden;
+  border-radius: 12px;
+  background: #1a1a1a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+}
+
+.photo-panel:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.photo-panel-inner {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.panel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.photo-panel:hover .panel-image {
+  transform: scale(1.1);
+}
+
+/* パネルのサイズバリエーションはインラインスタイルで制御 */
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  padding: 20px;
+  text-align: center;
+}
+
+.image-name {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Swiperのナビゲーションボタンのスタイル */
+.photo-swiper :global(.swiper-button-next),
+.photo-swiper :global(.swiper-button-prev) {
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.photo-swiper :global(.swiper-button-next:hover),
+.photo-swiper :global(.swiper-button-prev:hover) {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.photo-swiper :global(.swiper-button-next::after),
+.photo-swiper :global(.swiper-button-prev::after) {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* ページネーションのスタイル */
+.photo-swiper :global(.swiper-pagination-bullet) {
+  background: white;
+  opacity: 0.5;
+  width: 12px;
+  height: 12px;
+  transition: all 0.3s ease;
+}
+
+.photo-swiper :global(.swiper-pagination-bullet-active) {
+  opacity: 1;
+  background: #f59e0b; /* 薄めの黄色 */
+  transform: scale(1.2);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1024px) {
+  .photo-masonry-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3列で8枚を配置 */
+    grid-auto-rows: minmax(120px, 1fr);
+    gap: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .photo-masonry-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2列で8枚を配置 */
+    grid-auto-rows: minmax(100px, 1fr);
+    gap: 5px;
+  }
+
+  .slide-content.panel-layout {
+    padding: 4px;
+  }
+
+  .photo-swiper :global(.swiper-button-next),
+  .photo-swiper :global(.swiper-button-prev) {
+    width: 40px;
+    height: 40px;
+  }
+
+  .photo-swiper :global(.swiper-button-next::after),
+  .photo-swiper :global(.swiper-button-prev::after) {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-masonry-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2列で8枚を配置 */
+    grid-auto-rows: minmax(90px, 1fr);
+    gap: 4px;
+  }
+}
