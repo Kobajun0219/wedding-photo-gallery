@@ -132,14 +132,16 @@
   }
 
   .nav-link {
-    background: rgba(255, 255, 255, 0.4) !important; /* さらに透明度を上げる */
-    backdrop-filter: blur(10px); /* ガラスモーフィズム効果 */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* シャドウを追加 */
+    background: rgba(255, 255, 255, 0.01) !important; /* 少し色を追加 */
+    backdrop-filter: blur(8px); /* ガラスモーフィズム効果 */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
+    border: 1px solid rgba(236, 72, 153, 0.3); /* ボーダーを残す */
   }
 
   .upload-button-footer {
-    background: rgba(236, 72, 153, 0.5); /* さらに透明度を上げる */
-    box-shadow: 0 4px 16px rgba(236, 72, 153, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2); /* シャドウを強化 */
+    background: rgba(236, 72, 153, 0.01); /* 少し色を追加 */
+    box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3); /* 軽いシャドウ */
+    border: 1px solid rgba(236, 72, 153, 0.5); /* ボーダーを残す */
   }
 
   .nav-icon {
@@ -168,14 +170,16 @@
   }
 
   .nav-link {
-    background: rgba(255, 255, 255, 0.35) !important; /* さらに透明度を上げる */
-    backdrop-filter: blur(10px); /* ガラスモーフィズム効果 */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* シャドウを追加 */
+    background: rgba(255, 255, 255, 0.15) !important; /* 少し色を追加 */
+    backdrop-filter: blur(8px); /* ガラスモーフィズム効果 */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
+    border: 1px solid rgba(236, 72, 153, 0.35); /* ボーダーを残す */
   }
 
   .upload-button-footer {
-    background: rgba(236, 72, 153, 0.45); /* さらに透明度を上げる */
-    box-shadow: 0 4px 16px rgba(236, 72, 153, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2); /* シャドウを強化 */
+    background: rgba(236, 72, 153, 0.2); /* 少し色を追加 */
+    box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3); /* 軽いシャドウ */
+    border: 1px solid rgba(236, 72, 153, 0.6); /* ボーダーを残す */
   }
 
   .nav-icon {
