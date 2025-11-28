@@ -6,12 +6,12 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import './PhotoCarousel.css'
 
-function PhotoCarousel({ photos, photosPerSlide = 8 }) {
+function PhotoCarousel({ photos, photosPerSlide = 5 }) {
   if (!photos || photos.length === 0) {
     return null
   }
 
-  // 1ページ8枚の写真をグループ化
+  // 1ページ5枚の写真をグループ化
   const photoGroups = useMemo(() => {
     if (!photos || photos.length === 0) return []
 

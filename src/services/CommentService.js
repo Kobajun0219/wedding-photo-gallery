@@ -1,4 +1,6 @@
 // APIサーバー経由でコメントを取得・投稿するサービス
+import AuthService from './AuthService'
+
 // 環境変数から取得、プロトコルがない場合は自動で追加
 let API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3002'
 
@@ -22,6 +24,7 @@ class CommentService {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          ...AuthService.getAuthHeaders(),
         },
       })
 
@@ -57,17 +60,22 @@ class CommentService {
 
   /**
    * コメントを投稿
-   * @param {string} message - コメントメッセージ
+   * @param {string} comment - コメント内容
    * @returns {Promise<Object>} 投稿されたコメント
    */
-  async postComment(message) {
+  async postComment(comment) {
     try {
+      if (!comment || !comment.trim()) {
+        throw new Error('コメントが空です')
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...AuthService.getAuthHeaders(),
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ comment: comment.trim() }),
       })
 
       if (!response.ok) {
@@ -75,8 +83,8 @@ class CommentService {
         throw new Error(errorData.error || `HTTPエラー: ${response.status}`)
       }
 
-      const comment = await response.json()
-      return comment
+      const result = await response.json()
+      return result.comment
     } catch (error) {
       console.error('コメントの投稿に失敗しました:', error)
       throw error

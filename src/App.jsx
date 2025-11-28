@@ -1,25 +1,45 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import PhotoCarousel from './components/PhotoCarousel'
 import CommentSection from './components/CommentSection'
+import PhotoUpload from './components/PhotoUpload'
+import PhotoList from './components/PhotoList'
+import Footer from './components/Footer'
+import PasswordProtection from './components/PasswordProtection'
 import S3Service from './services/S3Service'
+import AuthService from './services/AuthService'
 import './App.css'
 
-function App() {
+// メインのギャラリーページ
+function GalleryPage() {
   const [photos, setPhotos] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
+  const [showVideo, setShowVideo] = useState(false) // 動画表示の切り替え
   const intervalRef = useRef(null)
+
+  // YouTube動画のID
+  const youtubeVideoId = 'ADtOBs78Li4'
+
 
   // 写真を取得する関数
   const loadRandomPhotos = async () => {
     try {
       setLoading(true)
       setError(null)
-      const randomPhotos = await S3Service.getRandomPhotos(40) // 40枚の写真をランダムに取得（1ページ8枚 × 5ページ）
+      const randomPhotos = await S3Service.getRandomPhotos(25) // 25枚の写真をランダムに取得（1ページ5枚 × 5ページ）
       setPhotos(randomPhotos)
     } catch (err) {
       console.error('写真の読み込みエラー:', err)
       console.error('エラー詳細:', err.originalError || err)
+
+      // 認証エラーの場合はログアウト
+      if (err.message && (err.message.includes('認証') || err.message.includes('401') || err.message.includes('403'))) {
+        AuthService.logout()
+        window.location.reload()
+        return
+      }
 
       // より詳細なエラーメッセージを表示
       const errorMessage = err.message || '写真の読み込みに失敗しました。設定を確認してください。'
@@ -28,6 +48,7 @@ function App() {
       setLoading(false)
     }
   }
+
 
   // 初回読み込みと定期的な更新
   useEffect(() => {
@@ -48,11 +69,7 @@ function App() {
   }, [])
 
   return (
-    <div className="app">
-      <div className="app-container">
-        <header className="app-header">
-          <h1>Wedding Photo Gallery</h1>
-        </header>
+    <div className="app-container">
 
         {error && (
           <div className="error-message">
@@ -78,27 +95,132 @@ function App() {
 
         <div className="main-content">
           <div className="photo-area">
-            {loading ? (
+            {showVideo ? (
+              // YouTube動画表示
+              <div className="youtube-video-container">
+                <iframe
+                  src={`https://www.youtube.com/embed/${youtubeVideoId}?autoplay=0&rel=0`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="youtube-iframe"
+                ></iframe>
+              </div>
+            ) : loading ? (
               <div className="loading-container">
                 <div className="spinner"></div>
                 <p>写真を読み込み中...</p>
               </div>
             ) : (
               photos.length > 0 ? (
-                <PhotoCarousel photos={photos} photosPerSlide={8} />
+                <PhotoCarousel photos={photos} photosPerSlide={5} />
               ) : (
                 <div className="no-photos">
                   <p>写真が見つかりませんでした</p>
                 </div>
               )
             )}
+
+            {/* 切り替えボタン（常に表示） */}
+            <button
+              className="view-toggle-button"
+              onClick={() => setShowVideo(!showVideo)}
+              title={showVideo ? '写真を表示' : '動画を表示'}
+              type="button"
+            >
+              {showVideo ? '📷' : '▶️'}
+            </button>
           </div>
           <div className="comment-area">
             <CommentSection />
           </div>
         </div>
-      </div>
     </div>
+  )
+}
+
+// レイアウトコンポーネント（ナビゲーション付き）
+function Layout({ children }) {
+  const location = useLocation()
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
+  const isPhotoListPage = location.pathname === '/list'
+
+  // 認証状態を確認
+  useEffect(() => {
+    const checkAuth = async () => {
+      const isValid = await AuthService.verifyToken()
+      if (isValid) {
+        setIsAuthenticated(true)
+      } else {
+        AuthService.logout()
+      }
+    }
+    checkAuth()
+  }, [])
+
+  // 写真一覧ページの場合はbodyとhtmlにクラスを追加してスクロールを有効化
+  useEffect(() => {
+    if (isPhotoListPage) {
+      document.body.classList.add('photo-list-page')
+      document.documentElement.classList.add('photo-list-page')
+    } else {
+      document.body.classList.remove('photo-list-page')
+      document.documentElement.classList.remove('photo-list-page')
+    }
+    return () => {
+      document.body.classList.remove('photo-list-page')
+      document.documentElement.classList.remove('photo-list-page')
+    }
+  }, [isPhotoListPage])
+
+  // パスワード認証成功時のコールバック
+  const handlePasswordCorrect = () => {
+    setIsAuthenticated(true)
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="app">
+        <PasswordProtection onPasswordCorrect={handlePasswordCorrect} />
+      </div>
+    )
+  }
+
+  // アップロード成功時のコールバック（全ページ共通）
+  const handleUploadSuccess = () => {
+    // ページをリロードして最新の写真を表示
+    window.location.reload()
+  }
+
+  return (
+    <div className={`app ${isPhotoListPage ? 'photo-list-page' : ''}`}>
+      <div className="app-content-wrapper">
+        {children}
+      </div>
+      <Footer onUploadClick={() => setIsUploadModalOpen(true)} />
+      {/* アップロードモーダル（全ページ共通） */}
+      <PhotoUpload
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+        onUploadSuccess={handleUploadSuccess}
+      />
+    </div>
+  )
+}
+
+// メインのAppコンポーネント
+function App() {
+  return (
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<GalleryPage />} />
+          <Route path="/list" element={<PhotoList />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   )
 }
 

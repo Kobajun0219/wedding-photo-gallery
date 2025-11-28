@@ -1,87 +1,129 @@
+:root {
+  --footer-height: 70px; /* フッターの高さ（デスクトップ） */
+}
+
+@media (max-width: 768px) {
+  :root {
+    --footer-height: 60px; /* フッターの高さ（スマホ） */
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --footer-height: 60px; /* フッターの高さ（小さいスマホ） */
+  }
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+  background-color: #fef7f7; /* より上品な淡いピンク */
+  color: #2d2d2d;
+  letter-spacing: 0.02em;
+}
+
 .app {
   width: 100%;
   margin: 0;
   height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch; /* 上下いっぱいに伸ばす */
+  justify-content: stretch; /* 左右いっぱいに伸ばす */
   overflow: hidden; /* スクロールを無効化 */
+  flex-direction: column; /* フッターを下に配置するため */
+}
+
+/* 写真一覧ページではスクロールを有効化 */
+.app.photo-list-page {
+  overflow-y: auto; /* 縦方向のスクロールを有効化 */
+  overflow-x: hidden;
+  height: 100vh;
+  min-height: 100vh;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+}
+
+/* フッター用のラッパー */
+.app-content-wrapper {
+  flex-grow: 1; /* コンテンツが利用可能なスペースを埋める */
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch; /* 上下いっぱいに伸ばす */
+  justify-content: stretch; /* 左右いっぱいに伸ばす */
+  min-height: 0; /* flexboxの子要素が縮小できるように */
 }
 
 .app-container {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  padding: 5px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(236, 72, 153, 0.08);
+  border: 1px solid rgba(236, 72, 153, 0.1);
+  padding: 0;
   width: 100%;
-  height: 100vh;
-  max-height: 100vh;
+  height: 100%; /* 親要素の高さに合わせる */
   overflow: hidden; /* スクロールを無効化 */
   display: flex;
   flex-direction: column;
 }
 
-.app-header {
-  text-align: center;
-  margin-bottom: 8px;
-  flex-shrink: 0; /* ヘッダーが縮まないように */
-}
-
-.app-header h1 {
-  color: #333;
-  font-size: 1.8rem;
-  margin-bottom: 3px;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); /* 薄めの黄色系グラデーション */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
 
 /* メインコンテンツエリア（写真とコメントを横並び） */
 .main-content {
   flex: 1;
   min-height: 0;
   display: flex;
-  gap: 5px;
+  gap: 0;
   overflow: hidden;
 }
 
 .photo-area {
-  flex: 3;
+  flex: 7; /* 写真:コメント = 7:3 */
   min-width: 0;
+  min-height: 0; /* flexboxの子要素が縮小できるように */
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  height: 100%; /* 親要素の高さに合わせる */
+  position: relative; /* 切り替えボタンの位置指定用 */
+  z-index: 1; /* レイヤー管理 */
 }
 
 .comment-area {
-  flex: 0.8;
+  flex: 3; /* 写真:コメント = 7:3 */
   min-width: 0;
+  min-height: 0; /* flexboxの子要素が縮小できるように */
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  height: 100%; /* 親要素の高さに合わせる */
 }
 
 @media (max-width: 1024px) {
   .main-content {
-    flex-direction: column;
+    flex-direction: row; /* 横並びを維持 */
   }
 
   .photo-area {
-    flex: 1.5;
+    flex: 6; /* 写真:コメント = 6:4 */
   }
 
   .comment-area {
-    flex: 1;
-    max-height: 300px;
+    flex: 4; /* 写真:コメント = 6:4 */
+    max-height: none; /* 高さ制限を削除 */
   }
 }
 
 @media (max-width: 768px) {
   .app-container {
-    padding: 4px;
-    height: calc(100vh - 10px);
-    max-height: calc(100vh - 10px);
+    padding: 0;
+    height: 100%; /* 親要素の高さに合わせる */
+    border-radius: 0;
   }
 
   .app-header {
@@ -93,11 +135,53 @@
   }
 
   .main-content {
-    gap: 4px;
+    gap: 0;
+    flex-direction: column; /* 縦並び（上と下） */
+  }
+
+  .photo-area {
+    flex: 5; /* 写真:コメント = 5:5 */
   }
 
   .comment-area {
-    max-height: 250px;
+    flex: 5; /* 写真:コメント = 5:5 */
+    max-height: none; /* 高さ制限を削除 */
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 0;
+    height: 100%; /* 親要素の高さに合わせる */
+    border-radius: 0;
+  }
+
+  .main-content {
+    gap: 0;
+    flex-direction: column; /* 縦並び（上と下） */
+  }
+
+  .photo-area {
+    flex: 5; /* 写真:コメント = 5:5 */
+  }
+
+  .comment-area {
+    flex: 5; /* 写真:コメント = 5:5 */
+    max-height: none; /* 高さ制限を削除 */
+  }
+
+  .error-message {
+    padding: 15px;
+    font-size: 0.9rem;
+  }
+
+  .error-message h3 {
+    font-size: 1rem;
+  }
+
+  .no-photos {
+    padding: 40px 15px;
+    font-size: 1rem;
   }
 }
 
@@ -107,12 +191,13 @@
 
 .refresh-indicator {
   display: inline-block;
-  background: rgba(245, 158, 11, 0.15); /* 薄めの黄色 */
-  color: #d97706;
-  padding: 6px 12px;
-  border-radius: 15px;
-  font-size: 0.85rem;
-  font-weight: 500;
+  background: rgba(236, 72, 153, 0.1); /* 薄めのピンク */
+  color: rgba(236, 72, 153, 0.8);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -135,10 +220,10 @@
 }
 
 .spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid #fef3c7;
-  border-top: 4px solid #f59e0b; /* 薄めの黄色 */
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(236, 72, 153, 0.2);
+  border-top: 3px solid rgba(236, 72, 153, 0.6); /* 薄めのピンク */
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;

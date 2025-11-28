@@ -1,0 +1,166 @@
+.app-footer {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border-top: none !important;
+  box-shadow: none !important;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  flex-shrink: 0;
+  height: var(--footer-height);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+}
+
+.footer-nav {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: transparent !important;
+}
+
+.nav-link {
+  padding: 10px 20px;
+  color: rgba(45, 45, 45, 0.4);
+  text-decoration: none;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.nav-link:hover {
+  background: rgba(236, 72, 153, 0.08);
+  color: rgba(45, 45, 45, 0.7);
+  box-shadow: none;
+}
+
+.nav-link:hover .nav-icon {
+  opacity: 0.8; /* ホバー時は少し濃く */
+}
+
+.nav-link.active {
+  background: rgba(236, 72, 153, 0.12);
+  color: rgba(236, 72, 153, 0.8);
+  font-weight: 400;
+  box-shadow: none;
+}
+
+.nav-link.active .nav-icon {
+  opacity: 0.9; /* アクティブ時は少し濃く */
+}
+
+.upload-button-footer {
+  padding: 10px 20px;
+  background: rgba(236, 72, 153, 0.95);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4), 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  color: inherit; /* 親要素の色を継承 */
+  opacity: 0.6; /* アイコンも薄く */
+}
+
+.nav-text {
+  display: inline;
+}
+
+.upload-button-footer:hover {
+  background: rgba(236, 72, 153, 1);
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5), 0 2px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.upload-button-footer:active {
+  background: rgba(236, 72, 153, 0.95);
+  transform: translateY(0);
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .app-footer {
+    height: 60px;
+  }
+
+  .footer-content {
+    padding: 10px 12px;
+  }
+
+  .footer-nav {
+    gap: 8px;
+  }
+
+  .nav-link,
+  .upload-button-footer {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+
+  .nav-icon {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-footer {
+    height: 60px; /* 文字を表示するため少し高く */
+  }
+
+  .footer-content {
+    padding: 8px 10px;
+  }
+
+  .footer-nav {
+    gap: 6px;
+  }
+
+  .nav-link,
+  .upload-button-footer {
+    font-size: 0.7rem;
+    padding: 5px 8px;
+    gap: 4px; /* アイコンと文字の間隔を狭く */
+  }
+
+  .nav-icon {
+    font-size: 0.9rem; /* アイコンを少し小さく */
+  }
+
+  .nav-text {
+    display: inline; /* スマホでも文字を表示 */
+  }
+}

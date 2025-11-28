@@ -6,6 +6,8 @@ function CommentSection() {
   const [comments, setComments] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [commentText, setCommentText] = useState('')
+  const [submitting, setSubmitting] = useState(false)
   const intervalRef = useRef(null)
 
   // コメント一覧を取得
@@ -40,7 +42,29 @@ function CommentSection() {
     }
   }, [])
 
-  // handleSubmitはLINE経由で投稿するため不要
+  // コメントを投稿
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!commentText.trim()) {
+      return
+    }
+
+    setSubmitting(true)
+    setError(null)
+
+    try {
+      await CommentService.postComment(commentText)
+      setCommentText('')
+      // コメント一覧を再取得
+      await loadComments()
+    } catch (err) {
+      console.error('コメントの投稿エラー:', err)
+      setError(err.message || 'コメントの投稿に失敗しました')
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <div className="comment-section">
@@ -48,7 +72,32 @@ function CommentSection() {
         <h2>Comments</h2>
       </div>
 
-      {/* LINE経由でコメントを投稿するため、フォームは非表示 */}
+      {/* コメント投稿フォーム */}
+      <form onSubmit={handleSubmit} className="comment-form">
+        <div className="comment-input-wrapper">
+          <div className="comment-input-container">
+            <textarea
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              placeholder="なんでもどうぞ..."
+              className="comment-input"
+              rows={1}
+              maxLength={140}
+              disabled={submitting}
+            />
+            <span className="comment-length">
+              {commentText.length}/140
+            </span>
+          </div>
+          <button
+            type="submit"
+            disabled={!commentText.trim() || submitting}
+            className="comment-submit-button"
+          >
+            {submitting ? '投稿中...' : '投稿'}
+          </button>
+        </div>
+      </form>
 
       {error && (
         <div className="comment-error" style={{ padding: '10px', color: '#c33', fontSize: '0.85rem', textAlign: 'center' }}>
@@ -66,14 +115,22 @@ function CommentSection() {
             まだコメントがありません
           </div>
         ) : (
-          comments.map((comment) => (
-            <div key={comment.messageId} className="comment-item">
+          comments.map((comment, index) => (
+            <div key={comment.id} className={`comment-item ${index % 2 === 1 ? 'right' : ''}`}>
               {comment.displayName && (
-                <div className="comment-header-info">
-                  <span className="comment-name">{comment.displayName}</span>
-                </div>
+                <span className="comment-name">{comment.displayName}</span>
               )}
-              <p className="comment-message">{comment.text}</p>
+              <div className="comment-bubble-wrapper">
+                <div className="comment-bubble">
+                  <p className="comment-message">{comment.comment}</p>
+                </div>
+                <div className="comment-time">
+                  {new Date(comment.timestamp).toLocaleString('ja-JP', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </div>
+              </div>
             </div>
           ))
         )}
