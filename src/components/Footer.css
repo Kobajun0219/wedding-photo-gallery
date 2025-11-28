@@ -72,8 +72,8 @@
 
 .upload-button-footer {
   padding: 10px 20px;
-  background: rgba(236, 72, 153, 0.95);
-  color: white;
+  background: rgba(236, 72, 153, 0.1);
+  color: rgba(236, 72, 153, 0.8); /* 写真一覧と同じ色 */
   border: none;
   border-radius: 12px;
   font-size: 0.875rem;
@@ -86,7 +86,7 @@
   align-items: center;
   gap: 8px;
   box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4), 0 2px 8px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(1px);
 }
 
 .nav-icon {
@@ -102,6 +102,7 @@
 
 .upload-button-footer:hover {
   background: rgba(236, 72, 153, 1);
+  color: rgba(236, 72, 153, 0.9); /* ホバー時も同じ色系 */
   box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5), 0 2px 8px rgba(0, 0, 0, 0.15);
   transform: translateY(-1px);
 }
@@ -132,15 +133,15 @@
   }
 
   .nav-link {
-    background: rgba(255, 255, 255, 0.01) !important; /* 少し色を追加 */
-    backdrop-filter: blur(8px); /* ガラスモーフィズム効果 */
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
+    background: rgba(255, 255, 255, 0.1) !important; /* ほぼ透明 */
+    backdrop-filter: blur(1px);
+    box-shadow: none; /* シャドウを削除 */
     border: 1px solid rgba(236, 72, 153, 0.3); /* ボーダーを残す */
   }
 
   .upload-button-footer {
-    background: rgba(236, 72, 153, 0.01); /* 少し色を追加 */
-    box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3); /* 軽いシャドウ */
+    background: rgba(236, 72, 153, 0.1); /* ほぼ透明 */
+    box-shadow: none; /* シャドウを削除 */
     border: 1px solid rgba(236, 72, 153, 0.5); /* ボーダーを残す */
   }
 
@@ -170,15 +171,14 @@
   }
 
   .nav-link {
-    background: rgba(255, 255, 255, 0.15) !important; /* 少し色を追加 */
-    backdrop-filter: blur(8px); /* ガラスモーフィズム効果 */
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
+    background: rgba(255, 255, 255, 0.1) !important; /* ほぼ透明 */
+    box-shadow: none; /* シャドウを削除 */
     border: 1px solid rgba(236, 72, 153, 0.35); /* ボーダーを残す */
   }
 
   .upload-button-footer {
-    background: rgba(236, 72, 153, 0.2); /* 少し色を追加 */
-    box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3); /* 軽いシャドウ */
+    background: rgba(236, 72, 153, 0.1); /* ほぼ透明 */
+    box-shadow: none; /* シャドウを削除 */
     border: 1px solid rgba(236, 72, 153, 0.6); /* ボーダーを残す */
   }
 
