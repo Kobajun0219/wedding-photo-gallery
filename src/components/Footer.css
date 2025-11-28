@@ -127,18 +127,29 @@
 
   .nav-link,
   .upload-button-footer {
-    font-size: 0.8rem;
-    padding: 6px 10px;
+    font-size: 0.9rem; /* 大きく */
+    padding: 10px 16px; /* 大きく */
+  }
+
+  .nav-link {
+    background: rgba(255, 255, 255, 0.4) !important; /* さらに透明度を上げる */
+    backdrop-filter: blur(10px); /* ガラスモーフィズム効果 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* シャドウを追加 */
+  }
+
+  .upload-button-footer {
+    background: rgba(236, 72, 153, 0.5); /* さらに透明度を上げる */
+    box-shadow: 0 4px 16px rgba(236, 72, 153, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2); /* シャドウを強化 */
   }
 
   .nav-icon {
-    font-size: 1.1rem;
+    font-size: 1.3rem; /* 大きく */
   }
 }
 
 @media (max-width: 480px) {
   .app-footer {
-    height: 60px; /* 文字を表示するため少し高く */
+    height: 65px; /* ボタンを大きくするため高さを増やす */
   }
 
   .footer-content {
@@ -151,13 +162,24 @@
 
   .nav-link,
   .upload-button-footer {
-    font-size: 0.7rem;
-    padding: 5px 8px;
-    gap: 4px; /* アイコンと文字の間隔を狭く */
+    font-size: 0.85rem; /* 大きく */
+    padding: 10px 14px; /* 大きく */
+    gap: 6px; /* アイコンと文字の間隔を少し広く */
+  }
+
+  .nav-link {
+    background: rgba(255, 255, 255, 0.35) !important; /* さらに透明度を上げる */
+    backdrop-filter: blur(10px); /* ガラスモーフィズム効果 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* シャドウを追加 */
+  }
+
+  .upload-button-footer {
+    background: rgba(236, 72, 153, 0.45); /* さらに透明度を上げる */
+    box-shadow: 0 4px 16px rgba(236, 72, 153, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2); /* シャドウを強化 */
   }
 
   .nav-icon {
-    font-size: 0.9rem; /* アイコンを少し小さく */
+    font-size: 1.2rem; /* 大きく */
   }
 
   .nav-text {
