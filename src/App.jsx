@@ -19,8 +19,8 @@ function GalleryPage() {
   const [showVideo, setShowVideo] = useState(false) // 動画表示の切り替え
   const intervalRef = useRef(null)
 
-  // YouTube動画のID
-  const youtubeVideoId = 'ADtOBs78Li4'
+  // YouTube動画のID（環境変数から取得、デフォルト値あり）
+  const youtubeVideoId = import.meta.env.VITE_YOUTUBE_VIDEO_ID || 'glGhaLKBJTo'
 
 
   // 写真を取得する関数
