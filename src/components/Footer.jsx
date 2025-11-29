@@ -15,10 +15,10 @@ function Footer({ onUploadClick }) {
           <Link
             to="/"
             className={`nav-link ${isGallery ? 'active' : ''}`}
-            title="ギャラリー"
+            title="配信"
           >
             <HiHome className="nav-icon" />
-            <span className="nav-text">ギャラリー</span>
+            <span className="nav-text">配信</span>
           </Link>
           <Link
             to="/list"

@@ -1,8 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './PhotoModal.css'
 
 function PhotoModal({ photos, currentIndex, onClose, onPrevious, onNext }) {
   const currentPhoto = photos[currentIndex]
+  const [touchStart, setTouchStart] = useState(null)
+  const [touchEnd, setTouchEnd] = useState(null)
+  const imageContainerRef = useRef(null)
+
+  // スワイプの最小距離（ピクセル）
+  const minSwipeDistance = 50
 
   // ESCキーで閉じる
   useEffect(() => {
@@ -34,6 +40,66 @@ function PhotoModal({ photos, currentIndex, onClose, onPrevious, onNext }) {
       document.removeEventListener('keydown', handleArrowKeys)
     }
   }, [onPrevious, onNext])
+
+  // タッチ開始
+  const onTouchStart = (e) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  // タッチ移動
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  // タッチ終了（スワイプ判定）
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe) {
+      onNext() // 左にスワイプ = 次の写真
+    } else if (isRightSwipe) {
+      onPrevious() // 右にスワイプ = 前の写真
+    }
+  }
+
+  // マウスドラッグ対応
+  const [mouseStart, setMouseStart] = useState(null)
+  const [isDragging, setIsDragging] = useState(false)
+
+  const onMouseDown = (e) => {
+    setIsDragging(true)
+    setMouseStart(e.clientX)
+  }
+
+  const onMouseMove = (e) => {
+    if (!isDragging) return
+    // ドラッグ中の処理は必要に応じて追加
+  }
+
+  const onMouseUp = (e) => {
+    if (!isDragging || !mouseStart) {
+      setIsDragging(false)
+      return
+    }
+
+    const distance = mouseStart - e.clientX
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe) {
+      onNext() // 左にドラッグ = 次の写真
+    } else if (isRightSwipe) {
+      onPrevious() // 右にドラッグ = 前の写真
+    }
+
+    setIsDragging(false)
+    setMouseStart(null)
+  }
 
   if (!currentPhoto) {
     return null
@@ -67,11 +133,23 @@ function PhotoModal({ photos, currentIndex, onClose, onPrevious, onNext }) {
           </button>
         )}
 
-        <div className="photo-modal-image-container">
+        <div
+          className="photo-modal-image-container"
+          ref={imageContainerRef}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseUp}
+          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+        >
           <img
             src={currentPhoto.url}
             alt={`写真 ${currentIndex + 1}`}
             className="photo-modal-image"
+            draggable={false}
           />
         </div>
 

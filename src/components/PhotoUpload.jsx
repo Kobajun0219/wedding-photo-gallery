@@ -199,7 +199,7 @@ function PhotoUpload({ isOpen, onClose, onUploadSuccess }) {
     }}>
       <div className="photo-upload-modal" onClick={(e) => e.stopPropagation()}>
         <div className="photo-upload-modal-header">
-          <h2>写真をアップロード</h2>
+          <h2>写真を投稿</h2>
           <button
             className="modal-close-button"
             onClick={onClose}

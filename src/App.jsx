@@ -16,7 +16,7 @@ function GalleryPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
-  const [showVideo, setShowVideo] = useState(false) // 動画表示の切り替え
+  const [showVideo, setShowVideo] = useState(true) // 動画表示の切り替え（デフォルトは動画）
   const intervalRef = useRef(null)
 
   // YouTube動画のID（環境変数から取得、デフォルト値あり）
