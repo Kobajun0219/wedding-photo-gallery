@@ -181,9 +181,10 @@ app.get('/api/photos/list', authenticateToken, async (req, res) => {
       return res.status(500).json({ error: 'S3バケット名が設定されていません' })
     }
 
-    // S3バケットからすべてのオブジェクトをリストアップ
+    // S3バケットのuploadsフォルダからオブジェクトをリストアップ
     const command = new ListObjectsV2Command({
       Bucket: bucketName,
+      Prefix: 'uploads/',
     })
 
     const response = await s3Client.send(command)
@@ -261,9 +262,10 @@ app.get('/api/photos/random', authenticateToken, async (req, res) => {
       return res.status(500).json({ error: 'S3バケット名が設定されていません' })
     }
 
-    // S3バケットからすべてのオブジェクトをリストアップ
+    // S3バケットのuploadsフォルダからオブジェクトをリストアップ
     const command = new ListObjectsV2Command({
       Bucket: bucketName,
+      Prefix: 'uploads/',
     })
 
     const response = await s3Client.send(command)
